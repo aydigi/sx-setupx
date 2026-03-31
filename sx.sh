@@ -202,6 +202,13 @@ command -v yarn >/dev/null 2>&1 && PKG_MGRS="$PKG_MGRS yarn,"
 PKG_MGRS=$(echo "$PKG_MGRS" | sed 's/,$//')
 [ -z "$PKG_MGRS" ] && PKG_MGRS="None"
 
+# Detect CLI Tools
+TOOLS=""
+command -v node >/dev/null 2>&1 && TOOLS+="node✅ " || TOOLS+="node❌ "
+command -v git >/dev/null 2>&1 && TOOLS+="git✅ " || TOOLS+="git❌ "
+command -v gh >/dev/null 2>&1 && TOOLS+="gh✅ " || TOOLS+="gh❌ "
+command -v python3 >/dev/null 2>&1 && TOOLS+="python✅" || TOOLS+="python❌"
+
 # ==============================
 # LOGOS & PRINTING
 # ==============================
@@ -298,6 +305,7 @@ STATS=(
     "${BOLD}${YELLOW}Disk:${RESET}         ${DISK}"
     "-----------------------------"
     "${BOLD}${GREEN}Pkg Mgrs:${RESET}    📦 ${PKG_MGRS}"
+    "${BOLD}${GREEN}Tools:${RESET}       🛠️  ${TOOLS}"
     "${BOLD}${GREEN}Public IP:${RESET}   🌐 ${PUBLIC_IP}"
     "${BOLD}${GREEN}Location:${RESET}    📍 ${LOCATION}"
     "-----------------------------"
