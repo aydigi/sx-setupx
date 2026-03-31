@@ -76,6 +76,15 @@ elif [[ "$1" == "--install-flutter" ]]; then
 elif [[ "$1" == "--install-react-native" ]]; then
     source "$DIR/components/install-react-native.sh"
     exit 0
+elif [[ "$1" == "--install-devtools" ]]; then
+    source "$DIR/components/install-devtools.sh"
+    exit 0
+elif [[ "$1" == "--install-all" ]]; then
+    source "$DIR/components/install-all.sh"
+    exit 0
+elif [[ "$1" == "--status" ]]; then
+    source "$DIR/components/status-check.sh"
+    exit 0
 fi
 
 # ==============================
@@ -308,29 +317,7 @@ echo ""
 # ==============================
 # QUICK STATUS CHECK
 # ==============================
-echo -e "${YELLOW}>> Automatic System Status Check...${RESET}"
-
-# Package Managers
-printf "${MAGENTA}📦 Package Managers:${RESET}"
-for pkg in brew apt scoop choco npm yarn; do
-    if command -v $pkg >/dev/null 2>&1; then
-        version=$($pkg --version 2>/dev/null | head -n 1 | grep -oE 'v?[0-9]+\.[0-9]+(\.[0-9]+)?' | head -n 1)
-        [ -z "$version" ] && version="Installed"
-        printf " ${GREEN}✅ %s${RESET} (%s)" "$pkg" "$version"
-    fi
-done
-echo ""
-
-# CLI Tools
-printf "${MAGENTA}🛠️  CLI Tools:       ${RESET}"
-for tool in node git gh python3; do
-    if command -v $tool >/dev/null 2>&1; then
-        version=$($tool --version 2>/dev/null | head -n 1 | grep -oE 'v?[0-9]+\.[0-9]+(\.[0-9]+)?' | head -n 1)
-        [ -z "$version" ] && version="Installed"
-        printf " ${GREEN}✅ %s${RESET} (%s)" "$tool" "$version"
-    fi
-done
-echo -e "\n"
+source "$DIR/components/status-check.sh"
 
 # ==============================
 # INTERACTIVE PROMPT

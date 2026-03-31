@@ -99,6 +99,10 @@ function promptChat() {
         console.log(`\n${colors.yellow}Fetching System Specs...${colors.reset}\n`);
         const scriptPath = path.join(__dirname, 'sx.sh');
         spawnSync(scriptPath, [], { stdio: 'inherit' });
+      } else if (cmd === '/status') {
+        console.log(`\n${colors.yellow}Fetching Specific Components Status...${colors.reset}\n`);
+        const scriptPath = path.join(__dirname, 'sx.sh');
+        spawnSync(scriptPath, ['--status'], { stdio: 'inherit' });
       } else if (cmd === '/clear') {
         history = [];
         console.log(`\n${colors.green}🧹 Chat history cleared!${colors.reset}`);
@@ -110,6 +114,21 @@ function promptChat() {
 
     // Natural Language Interception
     const lowerText = text.toLowerCase();
+    
+    if (lowerText.includes('install') && (lowerText.includes('all compens') || lowerText.includes('all components') || lowerText.includes('all') || lowerText.includes('everything'))) {
+      if (lowerText === 'install all') { /* Allow clean exact match */ }
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected mega-request to install ALL Components! This will take a while... Bypassing LLM...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--install-all'], { stdio: 'inherit' });
+      return promptChat();
+    }
+    
+    if (lowerText.includes('install') && (lowerText.includes('devtools') || lowerText.includes('studio') || lowerText.includes('vscode') || lowerText.includes('chrome') || lowerText.includes('xcode'))) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected mega-request to install Heavy DevTools (Android Studio, Chrome, VS Code, etc). Bypassing LLM...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--install-devtools'], { stdio: 'inherit' });
+      return promptChat();
+    }
     
     if (lowerText.includes('install') && (lowerText.includes('flutter') || lowerText.includes('fluter'))) {
       console.log(`\n${colors.cyan}🤖 sx-bot: Detected request to install Flutter. Executing local installer...${colors.reset}\n`);
@@ -129,6 +148,13 @@ function promptChat() {
       console.log(`\n${colors.cyan}🤖 sx-bot: Detected request to install CLI tools (Vercel, AWS, Cloud, AI tools, etc). Bypassing LLM...${colors.reset}\n`);
       const scriptPath = path.join(__dirname, 'sx.sh');
       spawnSync(scriptPath, ['--install-cli'], { stdio: 'inherit' });
+      return promptChat();
+    }
+    
+    if (lowerText.includes('status') || lowerText === '/status' || lowerText.includes('show status')) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Fetching comprehensive component status...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--status'], { stdio: 'inherit' });
       return promptChat();
     }
 
