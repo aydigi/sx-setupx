@@ -14,3 +14,4 @@ Thumbs.db
 
 # Configs
 .ayfetch-config.json
+.firebase_config/
