@@ -25,4 +25,10 @@ source "$DIR/install-react-native.sh"
 echo -e "${YELLOW}Stage 5: Heavy DevTools (Chrome, VSCode, Studio)${RESET}"
 source "$DIR/install-devtools.sh"
 
+echo -e "${YELLOW}Stage 6: DevOps Infrastructure (Docker, K8s)${RESET}"
+source "$DIR/install-devops.sh"
+
+echo -e "${YELLOW}Stage 7: Data Science Ecosystem (Miniconda)${RESET}"
+source "$DIR/install-conda.sh"
+
 echo -e "\n${GREEN}✨ ALL Components Installed and Configured Successfully!${RESET}"

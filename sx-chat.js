@@ -130,6 +130,20 @@ function promptChat() {
       return promptChat();
     }
     
+    if (lowerText.includes('install') && (lowerText.includes('devops') || lowerText.includes('docker') || lowerText.includes('kubernetes') || lowerText.includes('minikube'))) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected mega-request to install DevOps Infrastructure (Docker, K8s, etc). Bypassing LLM...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--install-devops'], { stdio: 'inherit' });
+      return promptChat();
+    }
+    
+    if (lowerText.includes('install') && (lowerText.includes('conda') || lowerText.includes('anaconda') || lowerText.includes('miniconda') || lowerText.includes('python data') || lowerText.includes('data sci'))) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected request to install Python Data Science Toolchain (Conda). Bypassing LLM...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--install-conda'], { stdio: 'inherit' });
+      return promptChat();
+    }
+    
     if (lowerText.includes('install') && (lowerText.includes('flutter') || lowerText.includes('fluter'))) {
       console.log(`\n${colors.cyan}🤖 sx-bot: Detected request to install Flutter. Executing local installer...${colors.reset}\n`);
       const scriptPath = path.join(__dirname, 'sx.sh');

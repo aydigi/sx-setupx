@@ -82,6 +82,12 @@ elif [[ "$1" == "--install-devtools" ]]; then
 elif [[ "$1" == "--install-all" ]]; then
     source "$DIR/components/install-all.sh"
     exit 0
+elif [[ "$1" == "--install-devops" ]]; then
+    source "$DIR/components/install-devops.sh"
+    exit 0
+elif [[ "$1" == "--install-conda" ]]; then
+    source "$DIR/components/install-conda.sh"
+    exit 0
 elif [[ "$1" == "--status" ]]; then
     source "$DIR/components/status-check.sh"
     exit 0

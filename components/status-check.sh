@@ -60,4 +60,14 @@ for tool in flutter react-native watchman code studio google-chrome chatgpt; do
         printf " ${GREEN}✅ %s${RESET}" "$tool"
     fi
 done
+echo ""
+
+# Group 5: Infrastructure & Data Science
+printf "${MAGENTA}🐳 DevOps & Data:    ${RESET}"
+for tool in docker kubectl minikube conda; do
+    if command -v $tool >/dev/null 2>&1; then
+        # Extra check for conda base alias
+        printf " ${GREEN}✅ %s${RESET}" "$tool"
+    fi
+done
 echo -e "\n"
