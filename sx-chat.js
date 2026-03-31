@@ -5,7 +5,7 @@ const readline = require('readline');
 const { spawnSync } = require('child_process');
 
 // Native fetch is available in Node 18+
-const configPath = path.join(os.homedir(), '.ayfetch-config.json');
+const configPath = path.join(os.homedir(), '.setupx-config.json');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -66,7 +66,7 @@ async function callGemini(text) {
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
     history.push({ role: "model", parts: [{ text: reply }] });
     
-    console.log(`\n${colors.bold}${colors.cyan}🤖 AY-Bot:${colors.reset}\n${reply}\n`);
+    console.log(`\n${colors.bold}${colors.cyan}🤖 sx-bot:${colors.reset}\n${reply}\n`);
   } catch (err) {
     console.error(`\n${colors.red}Error reaching API: ${err.message}${colors.reset}\n`);
     history.pop(); // remove failed context block
@@ -86,18 +86,18 @@ function promptChat() {
         rl.close();
         return;
       } else if (cmd === '/menu') {
-        console.log(`\n${colors.bold}${colors.yellow}🛠️  AY-Bot Command Menu${colors.reset}`);
+        console.log(`\n${colors.bold}${colors.yellow}🛠️  sx-bot Command Menu${colors.reset}`);
         console.log(`${colors.cyan}/install${colors.reset} - Install Apps & Components`);
         console.log(`${colors.cyan}/sys${colors.reset}     - Show System Specs`);
         console.log(`${colors.cyan}/clear${colors.reset}   - Clear Chat History`);
         console.log(`${colors.cyan}/exit${colors.reset}    - Quit Chat`);
       } else if (cmd === '/install' || cmd === '/apps') {
         console.log(`\n${colors.yellow}Running System Setup...${colors.reset}\n`);
-        const scriptPath = path.join(__dirname, 'ayfetch.sh');
+        const scriptPath = path.join(__dirname, 'sx.sh');
         spawnSync(scriptPath, ['--setup'], { stdio: 'inherit' });
       } else if (cmd === '/sys') {
         console.log(`\n${colors.yellow}Fetching System Specs...${colors.reset}\n`);
-        const scriptPath = path.join(__dirname, 'ayfetch.sh');
+        const scriptPath = path.join(__dirname, 'sx.sh');
         spawnSync(scriptPath, [], { stdio: 'inherit' });
       } else if (cmd === '/clear') {
         history = [];
@@ -116,7 +116,7 @@ function promptChat() {
 
 function start() {
   console.log(`${colors.cyan}==============================${colors.reset}`);
-  console.log(`${colors.bold}${colors.cyan}       AY DIGITAL CLI CHAT    ${colors.reset}`);
+  console.log(`${colors.bold}${colors.cyan}       SETUPX CLI CHAT        ${colors.reset}`);
   console.log(`${colors.cyan}==============================${colors.reset}\n`);
 
   loadConfig();
@@ -131,7 +131,7 @@ function start() {
         return;
       }
       saveConfig(key);
-      console.log(`\n${colors.green}✅ API Key saved securely to ~/.ayfetch-config.json!${colors.reset}\n`);
+      console.log(`\n${colors.green}✅ API Key saved securely to ~/.setupx-config.json!${colors.reset}\n`);
       console.log(`Type "exit" to quit.`);
       promptChat();
     });

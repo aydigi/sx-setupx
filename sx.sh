@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ==============================
-# AY DIGITAL CLI - SYSTEM INFO
+# setupx CLI - SYSTEM INFO
 # ==============================
 
 # Colors
@@ -55,7 +55,7 @@ fi
 # INSTALL & SETUP MODE
 # ==============================
 run_setup() {
-    echo -e "${CYAN}🚀 Starting AY Digital CLI Setup for: ${OS}${RESET}\n"
+    echo -e "${CYAN}🚀 Starting setupx CLI Setup for: ${OS}${RESET}\n"
 
     if [[ "$OS" == *"macOS"* ]]; then
         echo -e "${YELLOW}>> Installing Homebrew (macOS)...${RESET}"
@@ -107,9 +107,9 @@ if [[ "$1" == "--setup" ]]; then
 elif [[ "$1" == "--chat" ]]; then
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     if command -v node >/dev/null 2>&1; then
-        exec node "$DIR/aychat.js"
+        exec node "$DIR/sx-chat.js"
     else
-        echo -e "${RED}Node.js is not installed! Run './ayfetch.sh --setup' to automatically install Node, then try again.${RESET}"
+        echo -e "${RED}Node.js is not installed! Run './sx.sh --setup' to automatically install Node, then try again.${RESET}"
     fi
     exit 0
 fi
@@ -301,7 +301,7 @@ STATS=(
     "${BOLD}${GREEN}Public IP:${RESET}   🌐 ${PUBLIC_IP}"
     "${BOLD}${GREEN}Location:${RESET}    📍 ${LOCATION}"
     "-----------------------------"
-    "${BOLD}${CYAN}⚡ Powered by AY Digital${RESET}"
+    "${BOLD}${CYAN}⚡ Powered by setupx${RESET}"
 )
 
 # Render Side-by-Side

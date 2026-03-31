@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 
 # ==============================
-# AY DIGITAL CLI - INSTALLER
+# setupx CLI - INSTALLER
 # ==============================
 
-echo "🚀 Installing AY Digital CLI (ayfetch)..."
+echo "🚀 Installing setupx CLI (sx)..."
 
 # If the user curls from github:
-# sudo curl -sL https://raw.githubusercontent.com/anshulyadav/ayfetch/main/ayfetch.sh -o /usr/local/bin/ayfetch
-# sudo chmod +x /usr/local/bin/ayfetch
+# sudo curl -sL https://raw.githubusercontent.com/aydigi/sx-setupx/main/sx.sh -o /usr/local/bin/sx
+# sudo chmod +x /usr/local/bin/sx
 
 # Local install if run from repo
-if [ -f "./ayfetch.sh" ]; then
-    chmod +x ./ayfetch.sh
-    echo "✅ Executable permissions given to ayfetch.sh."
+if [ -f "./sx.sh" ]; then
+    chmod +x ./sx.sh
+    echo "✅ Executable permissions given to sx.sh."
     echo "To install globally, run:"
-    echo "  sudo cp ayfetch.sh /usr/local/bin/ayfetch"
+    echo "  sudo cp sx.sh /usr/local/bin/sx"
 else
-    echo "❌ Could not find ayfetch.sh in the current directory."
+    echo "❌ Could not find sx.sh in the current directory."
     echo "Please download the script manually or clone the repo."
 fi
 
-echo "✨ All set! Once installed, run 'ayfetch' to see your system info."
+echo "✨ All set! Once installed, run 'sx' to see your system info."

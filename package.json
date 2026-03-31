@@ -1,13 +1,13 @@
 {
-  "name": "@aydigi/ayfetch",
+  "name": "@aydigi/setupx-cli",
   "version": "1.0.0",
-  "description": "AY Digital CLI - System Info Tool",
-  "main": "ayfetch.sh",
+  "description": "setupx CLI - System Info Tool",
+  "main": "sx.sh",
   "bin": {
-    "ayfetch": "./ayfetch.sh"
+    "sx": "./sx.sh"
   },
   "scripts": {
-    "start": "bash ./ayfetch.sh"
+    "start": "bash ./sx.sh"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,8 @@
     "cli",
     "neofetch",
     "system-info",
-    "ayfetch"
+    "setupx",
+    "sx"
   ],
   "author": "Anshul Yadav",
   "license": "MIT"
