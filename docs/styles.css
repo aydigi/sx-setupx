@@ -92,6 +92,7 @@ h1 {
     letter-spacing: -0.05em;
     margin-bottom: 1rem;
     background: linear-gradient(to right, #ffffff, #8F95A5);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }

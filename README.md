@@ -23,7 +23,7 @@ Because the core execution relies on pure bash, you can run this script instantl
 
 **1. Clone the repository:**
 ```bash
-git clone https://github.com/anshulyadav/sx-setupx.git
+git clone https://github.com/aydigi/sx-setupx.git
 cd sx-setupx
 ```
 
@@ -46,7 +46,7 @@ chmod +x ayfetch.sh
 | `./ayfetch.sh` | Fetches your system hardware specs and internet information alongside an OS-specific Logo. |
 | `./ayfetch.sh --setup` | Analyzes your OS and seamlessly runs native installers (Brew/Apt/Choco) to setup Node, Yarn, Git, Python, etc. |
 | `./ayfetch.sh --chat` | Drops you into an interactive AI terminal session driven by Google Gemini. |
-| `npx @anshulyadav/ayfetch` | Runs the script if you have published it to the npm repository! |
+| `npx @aydigi/ayfetch` | Runs the script if you have published it to the npm repository! |
 
 ---
 

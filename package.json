@@ -1,5 +1,5 @@
 {
-  "name": "@anshulyadav/ayfetch",
+  "name": "@aydigi/ayfetch",
   "version": "1.0.0",
   "description": "AY Digital CLI - System Info Tool",
   "main": "ayfetch.sh",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/anshulyadav/ayfetch"
+    "url": "https://github.com/aydigi/sx-setupx"
   },
   "keywords": [
     "cli",
