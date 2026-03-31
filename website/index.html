@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>setupx | The Ultimate System Command Hub</title>
+    <meta name="description" content="A next-generation system tool featuring hardware monitoring, native package execution, and intelligent Gemini AI chat.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
+
+    <nav class="glass-nav">
+        <div class="nav-content">
+            <div class="logo">
+                <span class="logo-text">setup<span class="highlight">x</span></span>
+                <span class="version-badge">v1.0.0</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#demo">In Action</a>
+                <a href="https://github.com/aydigi/sx-setupx" target="_blank" class="github-link">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <header class="hero" id="demo">
+            <h1 class="animate-text-gradient">The Terminal,<br/>Reimagined.</h1>
+            <p class="subtitle fade-in-up">Manage packages, monitor system health, and harness AI from a single <strong>sx</strong> command.</p>
+            <div class="cta-group fade-in-up delayed">
+                <a href="https://github.com/aydigi/sx-setupx" class="btn btn-primary">Download Now</a>
+                <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Explore Features</button>
+            </div>
+
+            <div class="terminal-container glass-panel fade-in-up highly-delayed">
+                <div class="terminal-header">
+                    <div class="window-controls">
+                        <span class="dot close"></span>
+                        <span class="dot minimize"></span>
+                        <span class="dot maximize"></span>
+                    </div>
+                    <div class="terminal-title">bash - sx --sys</div>
+                </div>
+                <div class="terminal-body" id="term-view">
+                    <!-- Javascript will inject typing lines here -->
+                </div>
+            </div>
+        </header>
+
+        <section class="features" id="features">
+            <h2 class="section-title">Everything you need.</h2>
+            <div class="features-grid">
+                <div class="feature-card glass-card">
+                    <div class="feature-icon sys">💻</div>
+                    <h3>System Dashboard</h3>
+                    <p>Gorgeous colorized hardware specs spanning macOS, Linux, and Windows with beautiful native ASCII art.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon pkg">📦</div>
+                    <h3>Smart Installation</h3>
+                    <p>Dynamically detects your OS and gracefully installs tools via Native Package Managers like Brew, Apt, and Choco.</p>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon ai">🧠</div>
+                    <h3>Gemini AI Chat</h3>
+                    <p>A completely integrated chatbot. Get real-time command suggestions and technical help without leaving the terminal.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-footer">
+        <div class="footer-content">
+            <p>Designed and Built for <strong>setupx</strong></p>
+            <p class="copyright">&copy; 2026 AY Digital. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

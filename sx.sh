@@ -52,65 +52,29 @@ if grep -qi microsoft /proc/version 2>/dev/null; then
 fi
 
 # ==============================
+# ==============================
 # INSTALL & SETUP MODE
 # ==============================
-run_setup() {
-    echo -e "${CYAN}🚀 Starting setupx CLI Setup for: ${OS}${RESET}\n"
-
-    if [[ "$OS" == *"macOS"* ]]; then
-        echo -e "${YELLOW}>> Installing Homebrew (macOS)...${RESET}"
-        if ! command -v brew >/dev/null 2>&1; then
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-            # Fix for Brew not found immediately after install
-            if [ -x "/opt/homebrew/bin/brew" ]; then
-                eval "$(/opt/homebrew/bin/brew shellenv)"
-            elif [ -x "/usr/local/bin/brew" ]; then
-                eval "$(/usr/local/bin/brew shellenv)"
-            fi
-        else
-            echo -e "${GREEN}✓ Homebrew is already installed.${RESET}"
-        fi
-        echo -e "${YELLOW}>> Installing Node, Python, Git, and GitHub CLI...${RESET}"
-        brew install node yarn python git gh
-        
-    elif [[ "$OS" == *"Linux"* ]] || [[ "$OS" == *"WSL"* ]]; then
-        echo -e "${YELLOW}>> Installing APT Packages (Linux/WSL)...${RESET}"
-        sudo apt update
-        sudo apt install -y curl wget software-properties-common git python3 python3-pip
-        sudo apt install -y gh || echo "Note: 'gh' might require adding the GitHub repo on older Debian/Ubuntu versions."
-        
-        echo -e "${YELLOW}>> Installing Node.js & Yarn...${RESET}"
-        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-        sudo apt install -y nodejs
-        sudo npm install -g yarn
-
-    elif [[ "$OS" == *"Windows"* ]]; then
-        echo -e "${YELLOW}>> Installing Package Managers (Windows)...${RESET}"
-        echo -e "${MAGENTA}* This requires Admin privileges. A PowerShell window may pop up.*${RESET}"
-        
-        # Install Scoop
-        powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
-        
-        # Install Chocolatey
-        powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
-        
-        echo -e "${YELLOW}>> Installing Packages via Choco...${RESET}"
-        powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "choco install nodejs yarn python git gh -y"
-    fi
-
-    echo -e "\n${GREEN}✨ Setup Complete! Please restart your terminal/shell.${RESET}"
-    exit 0
-}
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ "$1" == "--setup" ]]; then
-    run_setup
+    source "$DIR/components/install-base.sh"
+    exit 0
 elif [[ "$1" == "--chat" ]]; then
-    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     if command -v node >/dev/null 2>&1; then
         exec node "$DIR/sx-chat.js"
     else
         echo -e "${RED}Node.js is not installed! Run './sx.sh --setup' to automatically install Node, then try again.${RESET}"
     fi
+    exit 0
+elif [[ "$1" == "--install-cli" ]]; then
+    source "$DIR/components/install-cli.sh"
+    exit 0
+elif [[ "$1" == "--install-flutter" ]]; then
+    source "$DIR/components/install-flutter.sh"
+    exit 0
+elif [[ "$1" == "--install-react-native" ]]; then
+    source "$DIR/components/install-react-native.sh"
     exit 0
 fi
 
@@ -341,3 +305,45 @@ for (( i=0; i<$MAX_LINES; i++ )); do
 done
 echo ""
 
+# ==============================
+# QUICK STATUS CHECK
+# ==============================
+echo -e "${YELLOW}>> Automatic System Status Check...${RESET}"
+
+# Package Managers
+printf "${MAGENTA}📦 Package Managers:${RESET}"
+for pkg in brew apt scoop choco npm yarn; do
+    if command -v $pkg >/dev/null 2>&1; then
+        version=$($pkg --version 2>/dev/null | head -n 1 | grep -oE 'v?[0-9]+\.[0-9]+(\.[0-9]+)?' | head -n 1)
+        [ -z "$version" ] && version="Installed"
+        printf " ${GREEN}✅ %s${RESET} (%s)" "$pkg" "$version"
+    fi
+done
+echo ""
+
+# CLI Tools
+printf "${MAGENTA}🛠️  CLI Tools:       ${RESET}"
+for tool in node git gh python3; do
+    if command -v $tool >/dev/null 2>&1; then
+        version=$($tool --version 2>/dev/null | head -n 1 | grep -oE 'v?[0-9]+\.[0-9]+(\.[0-9]+)?' | head -n 1)
+        [ -z "$version" ] && version="Installed"
+        printf " ${GREEN}✅ %s${RESET} (%s)" "$tool" "$version"
+    fi
+done
+echo -e "\n"
+
+# ==============================
+# INTERACTIVE PROMPT
+# ==============================
+echo -ne "${CYAN}Press [Enter] to exit, or type 'c' to start the AI Chatbox: ${RESET}"
+read -r choice
+echo ""
+
+if [[ "$choice" == "c" || "$choice" == "C" || "$choice" == "chat" ]]; then
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    if command -v node >/dev/null 2>&1; then
+        exec node "$DIR/sx-chat.js"
+    else
+        echo -e "${RED}Node.js is not installed! Run './sx.sh --setup' to automatically install Node, then try again.${RESET}"
+    fi
+fi

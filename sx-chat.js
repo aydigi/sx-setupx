@@ -108,6 +108,30 @@ function promptChat() {
       return promptChat();
     }
 
+    // Natural Language Interception
+    const lowerText = text.toLowerCase();
+    
+    if (lowerText.includes('install') && (lowerText.includes('flutter') || lowerText.includes('fluter'))) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected request to install Flutter. Executing local installer...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--install-flutter'], { stdio: 'inherit' });
+      return promptChat();
+    }
+    
+    if (lowerText.includes('install') && (lowerText.includes('react native') || lowerText.includes('reac naive') || lowerText.includes('reactnative') || lowerText.includes('rn'))) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected request to install React Native. Executing local installer...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--install-react-native'], { stdio: 'inherit' });
+      return promptChat();
+    }
+    
+    if (lowerText.includes('install') && lowerText.includes('cli')) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected request to install CLI tools (Vercel, AWS, Cloud, AI tools, etc). Bypassing LLM...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--install-cli'], { stdio: 'inherit' });
+      return promptChat();
+    }
+
     await callGemini(text);
     
     promptChat(); // recursive prompt for more context
