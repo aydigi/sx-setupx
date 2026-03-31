@@ -1,11 +1,11 @@
 <div align="center">
-  <h1>AY Digital CLI 🚀</h1>
+  <h1>setupx CLI 🚀</h1>
   <p><strong>A Next-Generation System Fetch & Command Hub for macOS, Linux, and Windows.</strong></p>
 </div>
 
 <br>
 
-AY Digital CLI (`ayfetch.sh`) is an all-in-one terminal Swiss-army knife. It goes far beyond a standard `neofetch` script by unifying system diagnostics, OS-specific package management, and a robust Gemini AI Chatbot directly into one unified command-line tool.
+setupx CLI (`ayfetch.sh`) is an all-in-one terminal Swiss-army knife. It goes far beyond a standard `neofetch` script by unifying system diagnostics, OS-specific package management, and a robust Gemini AI Chatbot directly into one unified command-line tool.
 
 ---
 
