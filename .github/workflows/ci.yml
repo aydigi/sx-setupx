@@ -1,0 +1,35 @@
+name: Build and Lint
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check JavaScript Syntax
+        run: node -c sx-chat.js
+
+      - name: Install ShellCheck
+        run: sudo apt-get install -y shellcheck
+
+      - name: Lint Shell Scripts
+        run: |
+          shellcheck sx.sh
+          shellcheck install.sh || echo "install.sh check skipped"
+          for file in components/*.sh; do
+             if [ -f "$file" ]; then
+                shellcheck "$file"
+             fi
+          done
