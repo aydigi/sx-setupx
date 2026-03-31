@@ -1,0 +1,335 @@
+#!/usr/bin/env bash
+
+# ==============================
+# AY DIGITAL CLI - SYSTEM INFO
+# ==============================
+
+# Colors
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+CYAN="\033[1;36m"
+YELLOW="\033[1;33m"
+BLUE="\033[1;34m"
+MAGENTA="\033[1;35m"
+RESET="\033[0m"
+BOLD="\033[1m"
+
+# ==============================
+# OS DETECTION (Required First)
+# ==============================
+OS="Unknown"
+KERNEL=$(uname -r 2>/dev/null)
+ARCH=$(uname -m 2>/dev/null)
+OS_ICON="🖥️ "
+
+case "$(uname -s 2>/dev/null)" in
+    Linux*) 
+        OS="Linux"
+        OS_ICON="🐧"
+        if [ -f /etc/os-release ]; then
+            . /etc/os-release
+            OS="${NAME} ${VERSION_ID:-}"
+        fi
+        ;;
+    Darwin*) 
+        OS="macOS"
+        OS_ICON="🍎"
+        ;;
+    CYGWIN*|MINGW*|MSYS*) 
+        OS="Windows"
+        OS_ICON="🪟"
+        ;;
+    *) 
+        OS="Unknown" 
+        OS_ICON="🖥️"
+        ;;
+esac
+
+# Detect WSL
+if grep -qi microsoft /proc/version 2>/dev/null; then
+    OS="WSL (Windows Subsystem for Linux)"
+    OS_ICON="🪟 "
+fi
+
+# ==============================
+# INSTALL & SETUP MODE
+# ==============================
+run_setup() {
+    echo -e "${CYAN}🚀 Starting AY Digital CLI Setup for: ${OS}${RESET}\n"
+
+    if [[ "$OS" == *"macOS"* ]]; then
+        echo -e "${YELLOW}>> Installing Homebrew (macOS)...${RESET}"
+        if ! command -v brew >/dev/null 2>&1; then
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            # Fix for Brew not found immediately after install
+            if [ -x "/opt/homebrew/bin/brew" ]; then
+                eval "$(/opt/homebrew/bin/brew shellenv)"
+            elif [ -x "/usr/local/bin/brew" ]; then
+                eval "$(/usr/local/bin/brew shellenv)"
+            fi
+        else
+            echo -e "${GREEN}✓ Homebrew is already installed.${RESET}"
+        fi
+        echo -e "${YELLOW}>> Installing Node, Python, Git, and GitHub CLI...${RESET}"
+        brew install node yarn python git gh
+        
+    elif [[ "$OS" == *"Linux"* ]] || [[ "$OS" == *"WSL"* ]]; then
+        echo -e "${YELLOW}>> Installing APT Packages (Linux/WSL)...${RESET}"
+        sudo apt update
+        sudo apt install -y curl wget software-properties-common git python3 python3-pip
+        sudo apt install -y gh || echo "Note: 'gh' might require adding the GitHub repo on older Debian/Ubuntu versions."
+        
+        echo -e "${YELLOW}>> Installing Node.js & Yarn...${RESET}"
+        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+        sudo apt install -y nodejs
+        sudo npm install -g yarn
+
+    elif [[ "$OS" == *"Windows"* ]]; then
+        echo -e "${YELLOW}>> Installing Package Managers (Windows)...${RESET}"
+        echo -e "${MAGENTA}* This requires Admin privileges. A PowerShell window may pop up.*${RESET}"
+        
+        # Install Scoop
+        powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
+        
+        # Install Chocolatey
+        powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+        
+        echo -e "${YELLOW}>> Installing Packages via Choco...${RESET}"
+        powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "choco install nodejs yarn python git gh -y"
+    fi
+
+    echo -e "\n${GREEN}✨ Setup Complete! Please restart your terminal/shell.${RESET}"
+    exit 0
+}
+
+if [[ "$1" == "--setup" ]]; then
+    run_setup
+elif [[ "$1" == "--chat" ]]; then
+    DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    if command -v node >/dev/null 2>&1; then
+        exec node "$DIR/aychat.js"
+    else
+        echo -e "${RED}Node.js is not installed! Run './ayfetch.sh --setup' to automatically install Node, then try again.${RESET}"
+    fi
+    exit 0
+fi
+
+# ==============================
+# SYSTEM INFO FETCHING
+# ==============================
+
+# Detect Shell
+SHELL_NAME=$(basename "$SHELL")
+
+# User & Host
+USER_NAME=$(whoami 2>/dev/null)
+HOST_NAME=$(hostname -s 2>/dev/null || hostname 2>/dev/null)
+
+# Uptime
+case "$(uname -s)" in
+    Darwin*)
+        boot_time=$(sysctl -n kern.boottime | awk '{print $4}' | tr -d ',')
+        now=$(date +%s)
+        uptime_sec=$((now - boot_time))
+        days=$((uptime_sec / 86400))
+        hours=$((uptime_sec % 86400 / 3600))
+        mins=$((uptime_sec % 3600 / 60))
+        if [ $days -gt 0 ]; then
+            UPTIME="${days}d ${hours}h ${mins}m"
+        else
+            UPTIME="${hours}h ${mins}m"
+        fi
+        ;;
+    *)
+        UPTIME=$(uptime -p 2>/dev/null | sed 's/up //')
+        ;;
+esac
+[ -z "$UPTIME" ] && UPTIME=$(uptime 2>/dev/null | awk -F'( |,|:)+' '{print $6,$7" "$8}')
+
+# CPU Info
+CPU="Unknown CPU"
+if [ "$(uname -s)" = "Darwin" ]; then
+    CPU=$(sysctl -n machdep.cpu.brand_string)
+elif command -v lscpu >/dev/null 2>&1; then
+    CPU=$(lscpu | grep "Model name:" | sed -r 's/Model name:\s{1,}//g')
+else
+    CPU=$(uname -p)
+fi
+
+# GPU Info
+GPU="Unknown GPU"
+if [ "$(uname -s)" = "Darwin" ]; then
+    GPU=$(system_profiler SPDisplaysDataType 2>/dev/null | awk -F': ' '/Chipset Model/ {print $2}')
+elif command -v lspci >/dev/null 2>&1; then
+    GPU=$(lspci | grep -i 'vga\|3d\|2d' | head -n 1 | awk -F': ' '{print $2}')
+fi
+[ -z "$GPU" ] && GPU="N/A"
+
+# Memory
+MEM="N/A"
+if command -v free >/dev/null 2>&1; then
+    MEM=$(free -h | awk '/Mem:/ {print $3 " / " $2}')
+elif [ "$(uname -s)" = "Darwin" ]; then
+    total_mem=$(sysctl -n hw.memsize)
+    total_mb=$((total_mem / 1024 / 1024))
+    used_mem=$(vm_stat | grep "Pages active" | awk '{print $3}' | sed 's/\.//')
+    used_mb=$((used_mem * 4096 / 1024 / 1024))
+    MEM="${used_mb}MB / ${total_mb}MB"
+fi
+
+# Disk Info
+DISK=$(df -h / | awk 'NR==2 {print $3 " / " $2 " (" $5 " used)"}')
+
+# Internet & IP (Timeout 2s)
+PUBLIC_IP=$(curl -s --max-time 2 ifconfig.me || echo "Offline")
+LOCATION="Unknown Location"
+if [ "$PUBLIC_IP" != "Offline" ]; then
+    # try ipinfo.io
+    LOCATION=$(curl -s --max-time 2 "ipinfo.io/$PUBLIC_IP/city" || echo "Unknown")
+    COUNTRY=$(curl -s --max-time 2 "ipinfo.io/$PUBLIC_IP/country" || echo "")
+    [ -n "$COUNTRY" ] && LOCATION="$LOCATION, $COUNTRY"
+fi
+
+# Detect Package Managers
+PKG_MGRS=""
+command -v brew >/dev/null 2>&1 && PKG_MGRS="$PKG_MGRS brew,"
+command -v apt >/dev/null 2>&1 && PKG_MGRS="$PKG_MGRS apt,"
+command -v choco >/dev/null 2>&1 && PKG_MGRS="$PKG_MGRS choco,"
+command -v scoop >/dev/null 2>&1 && PKG_MGRS="$PKG_MGRS scoop,"
+command -v npm >/dev/null 2>&1 && PKG_MGRS="$PKG_MGRS npm,"
+command -v yarn >/dev/null 2>&1 && PKG_MGRS="$PKG_MGRS yarn,"
+
+PKG_MGRS=$(echo "$PKG_MGRS" | sed 's/,$//')
+[ -z "$PKG_MGRS" ] && PKG_MGRS="None"
+
+# ==============================
+# LOGOS & PRINTING
+# ==============================
+
+declare -a LOGO
+if [[ "$OS" == *"macOS"* ]]; then
+    c1=$GREEN; c2=$CYAN
+    LOGO=(
+        "${c1}                    'c.        "
+        "${c1}                 ,xNMM.        "
+        "${c1}               .OMMMMo         "
+        "${c1}               OMMM0,          "
+        "${c1}     .;loddo:' loolloddol;.    "
+        "${c1}   cKMMMMMMMMMMNWMMMMMMMMMM0:  "
+        "${c1} .KMMMMMMMMMMMMMMMMMMMMMMMWd.  "
+        "${c1} XMMMMMMMMMMMMMMMMMMMMMMMX.    "
+        "${c2} ;MMMMMMMMMMMMMMMMMMMMMMMM:    "
+        "${c2}  :MMMMMMMMMMMMMMMMMMMMMMMM:   "
+        "${c2}  .KMMMMMMMMMMMMMMMMMMMMMMM.   "
+        "${c2}   .xMMMMMMMMMMMMMMMMMMMMMM.   "
+        "${c2}     .xMMMMMMMMMMMMMMMMMMMO.   "
+        "${c2}        .:dOKKKKKKKOKKd:.      "
+    )
+    pad="             " 
+elif [[ "$OS" == *"Linux"* ]]; then
+    c1=$YELLOW; c2=$RED
+    LOGO=(
+        "${c1}         _nnnn_         "
+        "${c1}        dGGGGMMb        "
+        "${c1}       @p~qp~~qMb       "
+        "${c1}       M|@||@) M|       "
+        "${c1}       @,----.JM|       "
+        "${c1}      JS^\\__/  qKL     "
+        "${c1}     dZP        qKRb    "
+        "${c1}    dZP          qKKb   "
+        "${c2}   fZP            SMMb  "
+        "${c2}   HZM            MMMM  "
+        "${c2}   FqM            MMMM  "
+        "${c2} __| \".        |\\dS\"qML "
+        "${c2} |    \`.       | \`' \\Zq "
+        "${c2}_)      \\.___.,|     .' "
+        "${c2}\\____   )MMMMMP|   .'   "
+        "${c2}     \`-'       \`--'     "
+    )
+    pad="         " 
+elif [[ "$OS" == *"Windows"* || "$OS" == *"WSL"* ]]; then
+    c1=$CYAN; c2=$CYAN
+    LOGO=(
+        "${c1}        ,.=:!!t3Z3z.,              "
+        "${c1}       :tt:::tt333EE3              "
+        "${c1}       Et:::ztt33EEEL @Ee.,      .., "
+        "${c1}      ;tt:::tt333EE7 ;EEEEEEttttt33# "
+        "${c1}     :Et:::zt333EEQ. $EEEEEttttt33QL "
+        "${c1}     it::::tt333EEF @EEEEEEttttt33F  "
+        "${c1}    ;3=*\`\`\`\"*4EEV :EEEEEEttttt33@.  "
+        "${c1}    ,.=::::!t=., \` @EEEEEEtttz33QF   "
+        "${c1}   ;::::::::zt33)   \"4EEEtttji3P*    "
+        "${c2}  :t::::::::tt33.::.  \"4EEEt33!      "
+        "${c2}  i::::::::zt33F AEEEf .,\`/            "
+        "${c2} ;:::::::::t33V ;EEEttttt33#        "
+        "${c2} E::::::::zt33L @EEEtttttt33L       "
+        "${c2}{3=*\`\`\`\"*4E3) ;EEtttttttt33V      "
+        "${c2}               \"4EEttttt33*         "
+    )
+    pad=""
+else
+    # Default Text Logo
+    c1=$CYAN
+    LOGO=(
+        "${c1}                              "
+        "${c1}      ___   __   __           "
+        "${c1}     /   | / /  / /           "
+        "${c1}    / /| |/ /  / /            "
+        "${c1}   / ___ / /__/ /___          "
+        "${c1}  /_/  |_/_____/____/         "
+        "                              "
+    )
+    pad=" "
+fi
+
+# Setup stats array
+STATS=(
+    "${BOLD}${CYAN}${USER_NAME}${RESET}@${BOLD}${CYAN}${HOST_NAME}${RESET}"
+    "-----------------------------"
+    "${BOLD}${MAGENTA}OS:${RESET}          ${OS_ICON} ${OS}"
+    "${BOLD}${MAGENTA}Kernel:${RESET}      ${KERNEL}"
+    "${BOLD}${MAGENTA}Arch:${RESET}        ${ARCH}"
+    "${BOLD}${MAGENTA}Shell:${RESET}       ${SHELL_NAME}"
+    "${BOLD}${MAGENTA}Uptime:${RESET}      ⏱️  ${UPTIME}"
+    "-----------------------------"
+    "${BOLD}${YELLOW}CPU:${RESET}         ${CPU}"
+    "${BOLD}${YELLOW}GPU:${RESET}         ${GPU}"
+    "${BOLD}${YELLOW}Memory:${RESET}      ${MEM}"
+    "${BOLD}${YELLOW}Disk:${RESET}         ${DISK}"
+    "-----------------------------"
+    "${BOLD}${GREEN}Pkg Mgrs:${RESET}    📦 ${PKG_MGRS}"
+    "${BOLD}${GREEN}Public IP:${RESET}   🌐 ${PUBLIC_IP}"
+    "${BOLD}${GREEN}Location:${RESET}    📍 ${LOCATION}"
+    "-----------------------------"
+    "${BOLD}${CYAN}⚡ Powered by AY Digital${RESET}"
+)
+
+# Render Side-by-Side
+MAX_LINES=${#LOGO[@]}
+if [ ${#STATS[@]} -gt $MAX_LINES ]; then
+    MAX_LINES=${#STATS[@]}
+fi
+
+if [[ "$OS" == *"macOS"* ]]; then
+    empty_logo="                               " # 31 spaces
+elif [[ "$OS" == *"Linux"* ]]; then
+    empty_logo="                        " # 24 spaces
+elif [[ "$OS" == *"Windows"* || "$OS" == *"WSL"* ]]; then
+    empty_logo="                                   " # 35 spaces
+else
+    empty_logo="                              " # 30 spaces
+fi
+
+echo ""
+for (( i=0; i<$MAX_LINES; i++ )); do
+    # Format logo line to constant width
+    LOGO_LINE="${LOGO[$i]}"
+    if [ -z "$LOGO_LINE" ]; then
+        LOGO_LINE="${empty_logo}"
+    fi
+    STAT_LINE="${STATS[$i]}"
+    
+    echo -e "${LOGO_LINE}${RESET}${pad}  ${STAT_LINE}"
+done
+echo ""
+

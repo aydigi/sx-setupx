@@ -1,0 +1,24 @@
+{
+  "name": "@anshulyadav/ayfetch",
+  "version": "1.0.0",
+  "description": "AY Digital CLI - System Info Tool",
+  "main": "ayfetch.sh",
+  "bin": {
+    "ayfetch": "./ayfetch.sh"
+  },
+  "scripts": {
+    "start": "bash ./ayfetch.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anshulyadav/ayfetch"
+  },
+  "keywords": [
+    "cli",
+    "neofetch",
+    "system-info",
+    "ayfetch"
+  ],
+  "author": "Anshul Yadav",
+  "license": "MIT"
+}

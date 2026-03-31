@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AY Digital CLI | sx-setupx</title>
+    <meta name="description" content="Next-generation system command hub with integrated Gemini AI, automatic package management, and beautiful ASCII specs.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <div class="logo-badge">v1.0.0</div>
+            <h1>AY Digital CLI</h1>
+            <p class="subtitle">A sleek, beautiful terminal Swiss-army knife.</p>
+        </header>
+
+        <section class="terminal-mockup">
+            <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <div class="terminal-title">ayfetch.sh --chat</div>
+            </div>
+            <div class="terminal-body" id="terminalOutput">
+                <!-- Typed Content -->
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="icon">💻</div>
+                <h3>System Info (`ayfetch`)</h3>
+                <p>Gorgeous colorized hardware specs spanning macOS, Linux, and Windows with native ASCII OS logos.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📦</div>
+                <h3>OS Auto-Setup (`--setup`)</h3>
+                <p>Dynamically detects your OS and securely installs tools via Native Package Managers (Brew, Choco, APT).</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🧠</div>
+                <h3>Gemini Chat (`--chat`)</h3>
+                <p>Integrated Node.js native chatbot. Start conversing with Google Gemini instantly from your command line!</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h3>Slash Commands</h3>
+                <p>Unified `/install` and `/sys` capabilities directly within the AI Chat prompt.</p>
+            </div>
+        </section>
+
+        <footer>
+            <a href="https://github.com/anshulyadav/sx-setupx" class="cta-button" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                View on GitHub
+            </a>
+            <p>Powered by AY Digital ✨</p>
+        </footer>
+    </main>
+
+    <script>
+        const terminalOutput = document.getElementById("terminalOutput");
+        const lines = [
+            "<span class='cyan'>$</span> ./ayfetch.sh",
+            " ",
+            "                    <span class='green'>'c.</span>        <span class='cyan bold'>aydigi@macbook</span>",
+            "                 <span class='green'>,xNMM.</span>        -----------------------------",
+            "               <span class='green'>.OMMMMo</span>         <span class='magenta bold'>OS:</span>          🍎 macOS",
+            "               <span class='green'>OMMM0,</span>          <span class='magenta bold'>Arch:</span>        arm64",
+            "     <span class='green'>.;loddo:' loolloddol;.</span>    <span class='magenta bold'>Shell:</span>       zsh",
+            "   <span class='green'>cKMMMMMMMMMMNWMMMMMMMMMM0:</span>  -----------------------------",
+            " <span class='green'>.KMMMMMMMMMMMMMMMMMMMMMMMWd.</span>  <span class='yellow bold'>CPU:</span>         Apple M1",
+            " <span class='green'>XMMMMMMMMMMMMMMMMMMMMMMMX.</span>    <span class='yellow bold'>GPU:</span>         Apple M1",
+            " <span class='cyan'>;MMMMMMMMMMMMMMMMMMMMMMMM:</span>    <span class='yellow bold'>Memory:</span>      528MB / 8192MB",
+            "  <span class='cyan'>:MMMMMMMMMMMMMMMMMMMMMMMM:</span>   -----------------------------",
+            "  <span class='cyan'>.KMMMMMMMMMMMMMMMMMMMMMMM.</span>   <span class='green bold'>Pkg Mgrs:</span>    📦 brew, npm, choco",
+            "   <span class='cyan'>.xMMMMMMMMMMMMMMMMMMMMMM.</span>   <span class='green bold'>Public IP:</span>   🌐 192.168.0.1",
+            "     <span class='cyan'>.xMMMMMMMMMMMMMMMMMMMO.</span>   <span class='green bold'>Location:</span>    📍 Earth",
+            "        <span class='cyan'>.:dOKKKKKKKOKKd:.</span>      -----------------------------",
+            "                               <span class='cyan bold'>⚡ Powered by AY Digital</span>"
+        ];
+        
+        let i = 0;
+        function renderTerminal() {
+            if (i < lines.length) {
+                terminalOutput.innerHTML += `<div>${lines[i]}</div>`;
+                i++;
+                setTimeout(renderTerminal, 150 + Math.random() * 50);
+            }
+        }
+        setTimeout(renderTerminal, 500);
+    </script>
+</body>
+</html>
