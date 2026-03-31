@@ -1,62 +1,107 @@
 <div align="center">
   <h1>setupx CLI 🚀</h1>
-  <p><strong>A Next-Generation System Fetch & Command Hub for macOS, Linux, and Windows.</strong></p>
+  <p><strong>A Next-Generation System Provisioner, Cloud Deployer, and Gemini AI Chatbot.</strong></p>
 </div>
 
-<br>
+---
 
-setupx CLI (`sx.sh`) is an all-in-one terminal Swiss-army knife. It goes far beyond a standard `neofetch` script by unifying system diagnostics, OS-specific package management, and a robust Gemini AI Chatbot directly into one unified command-line tool.
+## 📖 About
+
+**setupx** (built by AY Digital) is the ultimate Swiss-army knife for modern developers. It unifies high-performance OS-specific package management, graphical heavy-app installations, Cloud Native deployments, and an intelligent **Google Gemini-powered** terminal chatbot into a single script. 
+
+Whether you are spinning up a fresh MacBook, a Windows desktop, or a Linux headless server, `setupx` abstracts all package managers (`brew`, `choco`, `apt`, `snap`) and environment variables so you can get to work instantly.
 
 ---
 
-## 🔥 Features
-* **🎨 Stunning System Info (`sx`)**: Dynamically fetch your real-time CPU, GPU, Disk Usage, Uptime, Memory, Network IPs, and precise City locations. Renders with beautiful ASCII logos custom-built for Windows, Linux, and macOS.
-* **📦 Native OS Installers (`--setup`)**: Instantly install dependencies no matter what OS you run! Automatically downloads required package managers (`homebrew`, `apt`, `chocolatey`, `scoop`) and installs standard components natively (`node`, `python`, `git`, `gh`).
-* **🧠 Gemini AI Chatbot (`--chat`)**: Native, real-time Node.js chat client directly built into the CLI that seamlessly talks to Google's Gemini models.
-* **⚡ Slash Commands Hub**: Run `/install` or `/sys` natively from inside the Chat prompt without ever quitting your session!
+## 🔥 Features & Architecture
+
+`setupx` operates on a highly modular components system:
+
+1. **System Diagnostics**: Native `sx` script fetches real-time CPU, GPU, RAM, Uptime, and Geolocation overlaid with OS-specific ASCII art.
+2. **Base Installation**: Installs core tools like `git`, `python`, `node`, `yarn`.
+3. **Mobile SDKs**: Seamlessly provisions **Flutter** and **React Native** (including Watchman, Xcode Command Line tools, and Azul Zulu Java).
+4. **DevOps Engine**: Deploys **Docker**, **Kubernetes (kubectl)**, and **Minikube** clusters natively.
+5. **Data Science**: Bypasses heavy GUIs to strictly install **Miniconda3** for pure CLI AI & Data workflows.
+6. **Mega DevTools**: Installs heavy UI applications including VS Code, Android Studio, Google Chrome, and ChatGPT Desktop.
+7. **Cloud Delivery**: Ships your local applications instantly to **Vercel** or **Firebase**.
+8. **AI Chatbot (`sx-chat`)**: Native Node.js interceptor powered by Google Gemini. It can answer coding questions, or execute any of the above installations via Natural Language!
 
 ---
 
-## 🛠️ Installation
+## 🛠️ Installation & Setup
 
-Because the core execution relies on pure bash, you can run this script instantly!
+You can run this script instantly out of the box because it relies on pure bash!
 
-**1. Clone the repository:**
 ```bash
+# 1. Clone the repository
 git clone https://github.com/aydigi/sx-setupx.git
 cd sx-setupx
-```
 
-**2. Make Executable:**
-```bash
+# 2. Make it Executable
 chmod +x sx.sh
-```
 
-**3. Run:**
-```bash
+# 3. Fire it up!
 ./sx.sh
 ```
 
+*(Note: On your first run, enter the AI Chat prompt mode to securely cache your Google Gemini API Key into `~/.setupx-config.json`)*
+
 ---
 
-## 💻 Commands Summary
+## 💻 CLI Usage
+
+The core engine is driven by straightforward arguments. 
 
 | Command | Action |
 | --- | --- |
-| `./sx.sh` | Fetches your system hardware specs and internet information alongside an OS-specific Logo. |
-| `./sx.sh --setup` | Analyzes your OS and seamlessly runs native installers (Brew/Apt/Choco) to setup Node, Yarn, Git, Python, etc. |
-| `./sx.sh --chat` | Drops you into an interactive AI terminal session driven by Google Gemini. |
-| `npx @aydigi/setupx-cli` | Runs the script if you have published it to the npm repository! |
+| `./sx.sh` | Fetches hardware specs, network IPs, prints OS Logo, and runs a Component Status Check. |
+| `./sx.sh --install-all` | The "God Command". Installs the Base, DevOps, Conda, Mobile SDKs, and DevTools all sequentially. |
+| `./sx.sh --status` | Verifies your `$PATH` for over 25+ toolchains (Docker, Flutter, Conda, Brew, Node, etc.). | 
+| `./sx.sh --setup` | Installs pure foundational tools (Node, Git, Python). |
+| `./sx.sh --install-devops` | Pulls down Docker and Kubernetes natively for your OS. |
+| `./sx.sh --chat` | Drops you into the interactive Gemini AI terminal. |
 
 ---
 
-## 🤖 Chatbot Slash Commands
-When in `--chat` mode, you don't even have to exit to manage your system! Just use these built-in slash commands:
+## ☁️ Cloud Deployments
+
+You can now use `setupx` as your CI/CD delivery mechanism natively! 
+
+- **To Vercel:** Run `./sx.sh --deploy-vercel` 
+- **To Firebase:** Run `./sx.sh --deploy-firebase`
+
+*Or inside the Chatbot, simply command:* `"Deploy this project to Vercel."*
+
+---
+
+## 🤖 The AI Chatbot
+The Node.js integrated chatbot isn't just an LLM wrapper. It natively parses your natural language and executes local terminal installations to guard API limits! 
+
+**Natural Language Examples:**
+- *"Install DevTools"* -> Triggers the heavy Android Studio & VS Code installer.
+- *"Show system status"* -> Triggers `--status`.
+- *"Install Anaconda"* -> Triggers Miniconda provisioner.
+- *"Deploy Firebase"* -> Ships your code!
+
+**Built-in Slash Commands:**
 - `/menu` — Prints out all commands.
-- `/install` (or `/apps`) — Instantly kicks off the `sx.sh --setup` installer script!
-- `/sys` — Prints your hardware system information instantly.
-- `/clear` — Clears conversation context memory.
+- `/status` — Scans the health of your system toolchains.
+- `/install all` — Master provisioner.
+- `/sys` — Prints your hardware system information.
 - `/exit` — Closes the chat gracefully.
 
 ---
-*⚡ Powered by AY Digital*
+
+## 🔗 Resources
+
+Explore deeper into the technologies powering this environment:
+
+* [**AY Digital**](https://github.com/aydigi) - The studio behind `setupx`.
+* [**Google Gemini AI Platform**](https://aistudio.google.com/) - Get your free API key here to power the `sx-chat` engine.
+* [**Vercel Documentation**](https://vercel.com/docs) - Learn how Vercel deployments are handled.
+* [**Firebase Hosting**](https://firebase.google.com/docs/hosting) - Learn more about the Firebase CLI wrapper.
+
+<br>
+<div align="center">
+  <i>Engineered for the modern developer.</i>
+</div>

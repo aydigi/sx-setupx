@@ -88,6 +88,13 @@ elif [[ "$1" == "--install-devops" ]]; then
 elif [[ "$1" == "--install-conda" ]]; then
     source "$DIR/components/install-conda.sh"
     exit 0
+elif [[ "$1" == "--deploy-vercel" ]]; then
+    # Pass 'vercel' argument natively
+    bash "$DIR/components/deploy.sh" vercel
+    exit 0
+elif [[ "$1" == "--deploy-firebase" ]]; then
+    bash "$DIR/components/deploy.sh" firebase
+    exit 0
 elif [[ "$1" == "--status" ]]; then
     source "$DIR/components/status-check.sh"
     exit 0

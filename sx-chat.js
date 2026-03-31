@@ -115,6 +115,21 @@ function promptChat() {
     // Natural Language Interception
     const lowerText = text.toLowerCase();
     
+    // Deployment Routing
+    if (lowerText.includes('deploy') && lowerText.includes('vercel')) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected command to deploy to Vercel...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--deploy-vercel'], { stdio: 'inherit' });
+      return promptChat();
+    }
+    
+    if (lowerText.includes('deploy') && lowerText.includes('firebase')) {
+      console.log(`\n${colors.cyan}🤖 sx-bot: Detected command to deploy to Firebase...${colors.reset}\n`);
+      const scriptPath = path.join(__dirname, 'sx.sh');
+      spawnSync(scriptPath, ['--deploy-firebase'], { stdio: 'inherit' });
+      return promptChat();
+    }
+    
     if (lowerText.includes('install') && (lowerText.includes('all compens') || lowerText.includes('all components') || lowerText.includes('all') || lowerText.includes('everything'))) {
       if (lowerText === 'install all') { /* Allow clean exact match */ }
       console.log(`\n${colors.cyan}🤖 sx-bot: Detected mega-request to install ALL Components! This will take a while... Bypassing LLM...${colors.reset}\n`);
